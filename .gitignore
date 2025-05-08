@@ -1,0 +1,9 @@
+# .NET Core
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
