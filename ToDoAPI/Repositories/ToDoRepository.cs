@@ -56,5 +56,48 @@ namespace ToDoAPI.Repositories
             var firstToDoItem = list.First();
             return firstToDoItem;
         }
+
+        public async Task AddNewToDoListItemRepository(string targetXmlPath, ToDoListItem item)
+        {
+            List<ToDoListItem> list;
+            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
+            using (var reader = new StreamReader(targetXmlPath))
+            {
+                list = (List<ToDoListItem>)serializer.Deserialize(reader);
+            }
+
+            list.Add(item);
+
+            using (var writer = new StreamWriter(targetXmlPath))
+            {
+                serializer.Serialize(writer, list);
+            }
+        }
+
+        public async Task<ToDoListItem?> GetToDoListItemAtIdRepository(string targetXmlPath, int? id)
+        {
+            List<ToDoListItem> list;
+            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
+            using (var reader = new StreamReader(targetXmlPath))
+            {
+                list = (List<ToDoListItem>)serializer.Deserialize(reader);
+            }
+            var firstToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
+
+            return firstToDoItem;
+        }
+
+        
+        public async Task<List<ToDoListItem>> GetToDoListItemAllRepository(string targetXmlPath)
+        {
+            List<ToDoListItem> list;
+            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
+            using (var reader = new StreamReader(targetXmlPath))
+            {
+                list = (List<ToDoListItem>)serializer.Deserialize(reader);
+            }
+
+            return list;
+        }
     }
 }

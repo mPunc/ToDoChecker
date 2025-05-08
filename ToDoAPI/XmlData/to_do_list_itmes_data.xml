@@ -11,4 +11,48 @@
     <DueDate>2025-05-10T23:49:05.365895+02:00</DueDate>
     <Priority>high</Priority>
   </ToDoListItem>
+  <ToDoListItem completed="false" category="music">
+    <Id>1</Id>
+    <Title>Play guitar</Title>
+    <TextContent>
+      <MainText>asdasdasd</MainText>
+      <Notes>asdfafa</Notes>
+    </TextContent>
+    <CreatedAt>2025-05-09T00:13:49.0995549+02:00</CreatedAt>
+    <DueDate>2025-05-11T00:13:49.0998689+02:00</DueDate>
+    <Priority>high</Priority>
+  </ToDoListItem>
+  <ToDoListItem completed="false" category="music">
+    <Id>1</Id>
+    <Title>Play guitar</Title>
+    <TextContent>
+      <MainText>asdasdasd</MainText>
+      <Notes>asdfafa</Notes>
+    </TextContent>
+    <CreatedAt>2025-05-09T00:13:49.0995549+02:00</CreatedAt>
+    <DueDate>2025-05-11T00:13:49.0998689+02:00</DueDate>
+    <Priority>high</Priority>
+  </ToDoListItem>
+  <ToDoListItem completed="true" category="sport">
+    <Id>1</Id>
+    <Title>Stuff</Title>
+    <TextContent>
+      <MainText>asdasdasd</MainText>
+      <Notes>asdfafa</Notes>
+    </TextContent>
+    <CreatedAt>2025-05-09T00:13:49.0995549+02:00</CreatedAt>
+    <DueDate>2025-05-11T00:13:49.0998689+02:00</DueDate>
+    <Priority>high</Priority>
+  </ToDoListItem>
+  <ToDoListItem completed="true" category="sport">
+    <Id>5</Id>
+    <Title>Different Stuff</Title>
+    <TextContent>
+      <MainText>asdasdasd</MainText>
+      <Notes>asdfafa</Notes>
+    </TextContent>
+    <CreatedAt>2025-05-09T00:13:49.0995549+02:00</CreatedAt>
+    <DueDate>2025-05-11T00:13:49.0998689+02:00</DueDate>
+    <Priority>high</Priority>
+  </ToDoListItem>
 </ToDoListItems>

@@ -51,5 +51,47 @@ namespace ToDoAPI.Services
             }
         }
 
+        public async Task<string> AddNewToDoListItemService(ToDoListItem? item)
+        {
+            try
+            {
+                await _toDoRepository.AddNewToDoListItemRepository(targetXmlPath, item);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                return "not ok";
+            }
+        }
+
+        public async Task<ToDoListItem?> GetToDoListItemAtIdService(int? id)
+        {
+            try
+            {
+                var item = await _toDoRepository.GetToDoListItemAtIdRepository(targetXmlPath, id);
+                return item;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                return null;
+            }
+        }
+
+        public async Task<List<ToDoListItem>> GetToDoListItemAllService()
+        {
+            try
+            {
+                var item = await _toDoRepository.GetToDoListItemAllRepository(targetXmlPath);
+                return item;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                return null;
+            }
+        }
+        
     }
 }
