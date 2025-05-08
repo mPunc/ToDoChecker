@@ -10,9 +10,12 @@ namespace ToDoAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            //sends xml instead of json
+            builder.Services.AddControllers().AddXmlSerializerFormatters();
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddSwaggerGen();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

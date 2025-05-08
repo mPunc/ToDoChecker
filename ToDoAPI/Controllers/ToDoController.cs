@@ -18,5 +18,21 @@ namespace ToDoAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("add-item")]
+        public async Task<IActionResult> AddToDoTask()
+        {
+            var result = await _toDoService.AddToDoTaskService();
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-first")]
+        public async Task<ToDoListItem?> GetFirstItem()
+        {
+            var result = await _toDoService.GetFirstItemService();
+
+            return result;
+        }
     }
 }
