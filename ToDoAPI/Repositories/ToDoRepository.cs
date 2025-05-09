@@ -43,6 +43,7 @@ namespace ToDoAPI.Repositories
             await stream.FlushAsync();
         }
 
+        //initial create xml repo
         public async Task<string> GenerateXmlFilesRepository()
         {
             if (File.Exists(targetXmlPath))
@@ -53,6 +54,7 @@ namespace ToDoAPI.Repositories
             return "File successfully created at: '" + targetXmlPath + "'";
         }
 
+        //CREATE one repo
         public async Task AddNewToDoListItemRepository(int id, ToDoListItem item)
         {
             List<ToDoListItem> list = await ReadXml();
@@ -63,17 +65,8 @@ namespace ToDoAPI.Repositories
             await CommitXmlChanges(list);
         }
 
-        public async Task UpdateToDoListItemRepository(ToDoListItem? item)
-        {
-            var list =  await ReadXml();
-
-            list.RemoveAll(x => x.Id == item.Id);
-            list.Add(item);
-
-            await CommitXmlChanges(list);
-        }
-
-        public async Task<ToDoListItem?> GetToDoListItemAtIdRepository(int? id)
+        //READ one repo
+        public async Task<ToDoListItem?> GetToDoListItemAtIdRepository(int id)
         {
             List<ToDoListItem> list = await ReadXml();
             var targetToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
@@ -81,14 +74,24 @@ namespace ToDoAPI.Repositories
             return targetToDoItem;
         }
 
-        
-        public async Task<List<ToDoListItem>> GetToDoListItemAllRepository()
+        //UPDATE one repo
+        public async Task UpdateToDoListItemRepository(ToDoListItem item)
         {
-            List<ToDoListItem> list = await ReadXml();
-            return list;
+            var list =  await ReadXml();
+
+            var targetToDoItem = list.FirstOrDefault(x => { return x.Id == item.Id; });
+            if (targetToDoItem != null)
+            {
+                list.Remove(targetToDoItem);
+                list.Add(item);
+            }
+            else throw new Exception("Item not found in file.");
+
+            await CommitXmlChanges(list);
         }
 
-        public async Task DeleteToDoListItemRepository(int? id)
+        //DELETE one repo
+        public async Task DeleteToDoListItemRepository(int id)
         {
             var list = await ReadXml();
 
@@ -96,5 +99,13 @@ namespace ToDoAPI.Repositories
 
             await CommitXmlChanges(list);
         }
+
+        //READ ALL repo
+        public async Task<List<ToDoListItem>> GetToDoListItemAllRepository()
+        {
+            List<ToDoListItem> list = await ReadXml();
+            return list;
+        }
+        
     }
 }

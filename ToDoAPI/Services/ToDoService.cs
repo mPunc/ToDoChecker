@@ -5,9 +5,13 @@ namespace ToDoAPI.Services
 {
     public class ToDoService
     {
-        private readonly ToDoRepository _toDoRepository = new();
+        private readonly ToDoRepository _toDoRepository;
+
+        public ToDoService(ToDoRepository toDoRepository) {
+            _toDoRepository = toDoRepository;
+        }
         
-        //finds first available index
+        //finds first available index util (starting from 0), ensures not repeating indexes
         private async Task<int> FindFreeIndexUtil()
         {
             var list = await _toDoRepository.GetToDoListItemAllRepository();
@@ -22,7 +26,7 @@ namespace ToDoAPI.Services
             return sendIndex;
         }
 
-        //initial create xml
+        //initial create xml service
         public async Task<string?> GenerateXmlFilesService()
         {
             try
@@ -36,48 +40,67 @@ namespace ToDoAPI.Services
             }
         }
 
-        public async Task<string> AddNewToDoListItemService(ToDoListItem? item)
+        //CREATE one service
+        public async Task<string?> AddNewToDoListItemService(ToDoListItem? item)
         {
             try
             {
+                if (item == null) return null;
                 await _toDoRepository.AddNewToDoListItemRepository(await FindFreeIndexUtil(), item);
-                return "ok";
+                return $"{item.Title} added!";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return "not ok";
-            }
-        }
-
-        public async Task<string> UpdateToDoListItemService(ToDoListItem? item)
-        {
-            try
-            {
-                await _toDoRepository.UpdateToDoListItemRepository(item);
-                return "ok";
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return "not ok";
-            }
-        }
-
-        public async Task<ToDoListItem?> GetToDoListItemAtIdService(int? id)
-        {
-            try
-            {
-                var item = await _toDoRepository.GetToDoListItemAtIdRepository(id);
-                return item;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
                 return null;
             }
         }
 
+        //READ one service
+        public async Task<ToDoListItem?> GetToDoListItemAtIdService(int? id)
+        {
+            try
+            {
+                if (id == null) return null;
+                var item = await _toDoRepository.GetToDoListItemAtIdRepository(id.Value);
+                return item;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        //UPDATE one service
+        public async Task<string?> UpdateToDoListItemService(ToDoListItem? item)
+        {
+            try
+            {
+                if (item == null) return null;
+                await _toDoRepository.UpdateToDoListItemRepository(item);
+                return $"{item.Title} updated!";
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        //DELETE one service
+        public async Task<string?> DeleteToDoListItemService(int? id)
+        {
+            try
+            {
+                if (id == null) return null;
+                await _toDoRepository.DeleteToDoListItemRepository(id.Value);
+                return $"Task deleted!";
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        //READ ALL service
         public async Task<ToDoListItemWrapper?> GetToDoListItemAllService()
         {
             try
@@ -86,24 +109,9 @@ namespace ToDoAPI.Services
                 var wrapper = new ToDoListItemWrapper { Items = items };
                 return wrapper;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
                 return null;
-            }
-        }
-
-        public async Task<string> DeleteToDoListItemService(int? id)
-        {
-            try
-            {
-                await _toDoRepository.DeleteToDoListItemRepository(id);
-                return "Went ok!";
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return "not gud";
             }
         }
 

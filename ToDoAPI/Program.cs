@@ -1,4 +1,5 @@
 
+using ToDoAPI.Repositories;
 using ToDoAPI.Services;
 
 namespace ToDoAPI
@@ -17,7 +18,7 @@ namespace ToDoAPI
             builder.Services.AddControllers().AddXmlSerializerFormatters();
 
             builder.Services.AddTransient<ToDoService>();
-
+            builder.Services.AddScoped<ToDoRepository>();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddSwaggerGen();

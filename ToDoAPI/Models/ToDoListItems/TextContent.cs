@@ -6,9 +6,9 @@ namespace ToDoAPI.Models.ToDoListItems
     public class TextContent
     {
         [XmlElement("MainText")]
-        public string MainText { get; set; }
+        public string? MainText { get; set; }
 
         [XmlElement("Notes")]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
     }
 }

@@ -9,10 +9,10 @@ namespace ToDoAPI.Models.ToDoListItems
         public int Id { get; set; }
 
         [XmlElement("Title")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [XmlElement("TextContent")]
-        public TextContent TextContent { get; set; }
+        public required TextContent TextContent { get; set; }
 
         [XmlElement("CreatedAt")]
         public DateTime CreatedAt { get; set; }
@@ -21,13 +21,13 @@ namespace ToDoAPI.Models.ToDoListItems
         public DateTime? DueDate { get; set; }
 
         [XmlElement("Priority")]
-        public string Priority { get; set; }
+        public string? Priority { get; set; }
 
         [XmlAttribute("completed")]
         public bool Completed { get; set; }
 
         [XmlAttribute("category")]
-        public string Category { get; set; }
+        public string? Category { get; set; }
     }
  
 }
