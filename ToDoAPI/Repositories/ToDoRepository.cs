@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using ToDoAPI.Models.ToDoListItems;
@@ -20,12 +22,25 @@ namespace ToDoAPI.Repositories
             return list;
         }
 
-        private static void CommitXmlChanges(List<ToDoListItem> list)
+        private static void CommitXmlChanges(List<ToDoListItem>? list)
         {
-            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
-            using (var writer = new StreamWriter(targetXmlPath))
+            if (File.Exists(targetXmlPath))
             {
-                serializer.Serialize(writer, list);
+                var ToDoListItems = new ToDoListItemWrapper();
+                if (list != null && list.Count != 0)
+                    ToDoListItems.Items.AddRange(list);
+                var xmlSerializer = new XmlSerializer(typeof(ToDoListItemWrapper));
+                var xmlSettings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    Encoding = Encoding.UTF8
+                };
+                using (var stream = new FileStream(targetXmlPath, FileMode.Create))
+                using (var writer = XmlWriter.Create(stream, xmlSettings))
+                {
+                    writer.WriteDocType("ToDoListItems", null, "to_do_list_items_dtd.dtd", null);
+                    xmlSerializer.Serialize(writer, ToDoListItems);
+                }
             }
         }
 
@@ -35,12 +50,7 @@ namespace ToDoAPI.Repositories
             {
                 return "File exists!";
             }
-            var ToDoListItems = new ToDoListItemWrapper();
-            var xmlSerializer = new XmlSerializer(typeof(ToDoListItemWrapper));
-            using (var writer = new StreamWriter(targetXmlPath))
-            {
-                xmlSerializer.Serialize(writer, ToDoListItems);
-            }
+            CommitXmlChanges(null);
             return "File successfully created!";
         }
 

@@ -1,0 +1,18 @@
+<!ELEMENT ToDoListItems (ToDoListItem*)>
+<!ATTLIST ToDoListItems
+    xmlns:xsi CDATA #REQUIRED
+    xmlns:xsd CDATA #REQUIRED>
+
+<!ELEMENT ToDoListItem (Id, Title, TextContent, CreatedAt, DueDate, Priority)>
+<!ATTLIST ToDoListItem
+    completed CDATA #REQUIRED
+    category CDATA #REQUIRED>
+
+<!ELEMENT Id (#PCDATA)>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT TextContent (MainText, Notes)>
+<!ELEMENT MainText (#PCDATA)>
+<!ELEMENT Notes (#PCDATA)>
+<!ELEMENT CreatedAt (#PCDATA)>
+<!ELEMENT DueDate (#PCDATA)>
+<!ELEMENT Priority (#PCDATA)>
