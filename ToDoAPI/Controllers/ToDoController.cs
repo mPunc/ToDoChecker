@@ -7,65 +7,70 @@ namespace ToDoAPI.Controllers
     [Route("todo")]
     public class ToDoController : ControllerBase
     {
-        private readonly ToDoService _toDoService = new();
+        private readonly ToDoService _toDoService;
 
+        public ToDoController(ToDoService toDoService)
+        {
+            _toDoService = toDoService;
+        }
+
+        //initial create xml
         [HttpGet("generate-xml")]
         public async Task<IActionResult> GenerateXmlFiles()
         {
             var result = await _toDoService.GenerateXmlFilesService();
 
-            return Ok(result);
+            return result is null ? NotFound("Item not found.") : Ok(result);
         }
 
-        [HttpGet("test/add-item")]
-        public async Task<IActionResult> AddDefaultToDoTask()
-        {
-            var result = await _toDoService.AddDefaultToDoTaskService();
-
-            return Ok(result);
-        }
-
-        [HttpPost("add-item")]
+        //CREATE one
+        [HttpPost]
         [Consumes("application/xml")]
         public async Task<IActionResult> AddNewToDoListItem([FromBody] ToDoListItem? item)
         {
             var result = await _toDoService.AddNewToDoListItemService(item);
 
-            return Ok(result);
+            return result is null ? NotFound("Item not found.") : Ok(result);
         }
 
-        [HttpPut("update-item/{id}")]
+        //READ one
+        [HttpGet("{id}")]
+        [Produces("application/xml")]
+        public async Task<IActionResult> GetToDoListItemAtId([FromRoute] int? id)
+        {
+            var result = await _toDoService.GetToDoListItemAtIdService(id);
+
+            return result is null ? NotFound() : Ok(result);
+        }
+
+        //UPDATE one
+        [HttpPut("{id}")]
         [Consumes("application/xml")]
         public async Task<IActionResult> UpdateToDoListItem([FromBody] ToDoListItem? item)
         {
             var result = await _toDoService.UpdateToDoListItemService(item);
 
-            return Ok(result);
+            return result is null ? NotFound("Item not found.") : Ok(result);
         }
 
-        [HttpGet("get-item/{id}")]
-        public async Task<ToDoListItem?> GetToDoListItemAtId([FromRoute] int? id)
-        {
-            var result = await _toDoService.GetToDoListItemAtIdService(id);
-
-            return result;
-        }
-
-        [HttpGet("get-all")]
-        public async Task<List<ToDoListItem>> GetToDoListItemAll()
-        {
-            var result = await _toDoService.GetToDoListItemAllService();
-
-            return result;
-        }
-
-        [HttpDelete("delete-item/{id}")]
+        //DELETE one
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteToDoListItem([FromRoute] int? id)
         {
             var result = await _toDoService.DeleteToDoListItemService(id);
 
-            return Ok(result);
+            return result is null ? NotFound("Item not found.") : Ok(result);
         }
+
+        //READ ALL
+        [HttpGet("get-all")]
+        [Produces("application/xml")]
+        public async Task<IActionResult> GetToDoListItemAll()
+        {
+            var result = await _toDoService.GetToDoListItemAllService();
+
+            return result is null ? NotFound("There was an error, you might need to generate xml.") : Ok(result);
+        }     
         
     }
 }

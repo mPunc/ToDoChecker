@@ -7,7 +7,8 @@ namespace ToDoAPI.Services
     {
         private readonly ToDoRepository _toDoRepository = new();
         
-        private async Task<int> FindFreeIndex()
+        //finds first available index
+        private async Task<int> FindFreeIndexUtil()
         {
             var list = await _toDoRepository.GetToDoListItemAllRepository();
             int sendIndex = 0;
@@ -21,6 +22,7 @@ namespace ToDoAPI.Services
             return sendIndex;
         }
 
+        //initial create xml
         public async Task<string> GenerateXmlFilesService()
         {
             try
@@ -35,25 +37,11 @@ namespace ToDoAPI.Services
             }
         }
 
-        public async Task<string> AddDefaultToDoTaskService()
-        {
-            try
-            {
-                await _toDoRepository.AddDefaultToDoTaskRepository(await FindFreeIndex());
-                return "Added!";
-            }
-            catch (Exception ex) 
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return "Failed :(";
-            }
-        }
-
         public async Task<string> AddNewToDoListItemService(ToDoListItem? item)
         {
             try
             {
-                await _toDoRepository.AddNewToDoListItemRepository(await FindFreeIndex(), item);
+                await _toDoRepository.AddNewToDoListItemRepository(await FindFreeIndexUtil(), item);
                 return "ok";
             }
             catch (Exception ex)
@@ -91,12 +79,13 @@ namespace ToDoAPI.Services
             }
         }
 
-        public async Task<List<ToDoListItem>> GetToDoListItemAllService()
+        public async Task<ToDoListItemWrapper?> GetToDoListItemAllService()
         {
             try
             {
-                var item = await _toDoRepository.GetToDoListItemAllRepository();
-                return item;
+                var items = await _toDoRepository.GetToDoListItemAllRepository();
+                var wrapper = new ToDoListItemWrapper { Items = items };
+                return wrapper;
             }
             catch (Exception ex)
             {

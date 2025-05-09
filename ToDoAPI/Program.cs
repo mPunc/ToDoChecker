@@ -1,4 +1,6 @@
 
+using ToDoAPI.Services;
+
 namespace ToDoAPI
 {
     public class Program
@@ -13,6 +15,9 @@ namespace ToDoAPI
 
             //sends xml instead of json
             builder.Services.AddControllers().AddXmlSerializerFormatters();
+
+            builder.Services.AddTransient<ToDoService>();
+
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddSwaggerGen();

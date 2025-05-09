@@ -21,7 +21,6 @@ namespace ToDoAPI.Repositories
             }
             return list;
         }
-
         private static void CommitXmlChanges(List<ToDoListItem>? list)
         {
             var ToDoListItems = new ToDoListItemWrapper();
@@ -49,28 +48,6 @@ namespace ToDoAPI.Repositories
             }
             CommitXmlChanges(null);
             return "File successfully created!";
-        }
-
-        public async Task AddDefaultToDoTaskRepository(int id)
-        {
-            var list = ReadXml();
-
-            var newToDoItem = new ToDoListItem()
-            {
-                Id = id,
-                CreatedAt = DateTime.Now,
-                Category = "music",
-                Completed = false,
-                Priority = "high",
-                Title = "Play guitar",
-                TextContent = new TextContent() { MainText = "asdasdasd", Notes = "asdfafa"},
-                DueDate= DateTime.Now.AddDays(2)
-            };
-
-            list.Add(newToDoItem);
-
-            CommitXmlChanges(list);
-            
         }
 
         public async Task AddNewToDoListItemRepository(int id, ToDoListItem item)
