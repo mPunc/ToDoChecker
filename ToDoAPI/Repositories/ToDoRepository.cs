@@ -7,21 +7,50 @@ namespace ToDoAPI.Repositories
 {
     public class ToDoRepository
     {
-        public async Task GenerateXmlFilesRepository(string targetXmlPath)
+        const string targetXmlPath = "./XmlData/to_do_list_itmes_data.xml";
+
+        private static List<ToDoListItem> ReadXml()
         {
+            List<ToDoListItem> list;
+            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
+            using (var reader = new StreamReader(targetXmlPath))
+            {
+                list = (List<ToDoListItem>)serializer.Deserialize(reader);
+            }
+            return list;
+        }
+
+        private static void CommitXmlChanges(List<ToDoListItem> list)
+        {
+            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
+            using (var writer = new StreamWriter(targetXmlPath))
+            {
+                serializer.Serialize(writer, list);
+            }
+        }
+
+        public async Task<string> GenerateXmlFilesRepository()
+        {
+            if (File.Exists(targetXmlPath))
+            {
+                return "File exists!";
+            }
             var ToDoListItems = new ToDoListItemWrapper();
             var xmlSerializer = new XmlSerializer(typeof(ToDoListItemWrapper));
             using (var writer = new StreamWriter(targetXmlPath))
             {
                 xmlSerializer.Serialize(writer, ToDoListItems);
             }
+            return "File successfully created!";
         }
 
-        public async Task AddToDoTaskRepository(string targetXmlPath)
+        public async Task AddDefaultToDoTaskRepository(int id)
         {
+            var list = ReadXml();
+
             var newToDoItem = new ToDoListItem()
             {
-                Id = 1,
+                Id = id,
                 CreatedAt = DateTime.Now,
                 Category = "music",
                 Completed = false,
@@ -31,72 +60,43 @@ namespace ToDoAPI.Repositories
                 DueDate= DateTime.Now.AddDays(2)
             };
 
-            List<ToDoListItem> list;
-            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
-            using (var reader = new StreamReader(targetXmlPath))
-            {
-                list = (List<ToDoListItem>)serializer.Deserialize(reader);
-            }
-
             list.Add(newToDoItem);
 
-            using (var writer = new StreamWriter(targetXmlPath))
-            {
-                serializer.Serialize(writer, list);
-            }
-        }
-        public async Task<ToDoListItem?> GetFirstItemRepository(string targetXmlPath)
-        {
-            List<ToDoListItem> list;
-            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
-            using (var reader = new StreamReader(targetXmlPath))
-            {
-                list = (List<ToDoListItem>)serializer.Deserialize(reader);
-            }
-            var firstToDoItem = list.First();
-            return firstToDoItem;
+            CommitXmlChanges(list);
+            
         }
 
-        public async Task AddNewToDoListItemRepository(string targetXmlPath, ToDoListItem item)
+        public async Task AddNewToDoListItemRepository(ToDoListItem item)
         {
-            List<ToDoListItem> list;
-            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
-            using (var reader = new StreamReader(targetXmlPath))
-            {
-                list = (List<ToDoListItem>)serializer.Deserialize(reader);
-            }
+            List<ToDoListItem> list = ReadXml();
 
             list.Add(item);
 
-            using (var writer = new StreamWriter(targetXmlPath))
-            {
-                serializer.Serialize(writer, list);
-            }
+            CommitXmlChanges(list);
         }
 
-        public async Task<ToDoListItem?> GetToDoListItemAtIdRepository(string targetXmlPath, int? id)
+        public async Task UpdateToDoListItemRepository(int? id, ToDoListItem? item)
         {
-            List<ToDoListItem> list;
-            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
-            using (var reader = new StreamReader(targetXmlPath))
-            {
-                list = (List<ToDoListItem>)serializer.Deserialize(reader);
-            }
-            var firstToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
+            List<ToDoListItem> list = ReadXml();
 
-            return firstToDoItem;
+            var targetToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
+            list.RemoveAll(x => x.Id == id);
+            list.Add(item);
+            CommitXmlChanges(list);
+        }
+
+        public async Task<ToDoListItem?> GetToDoListItemAtIdRepository(int? id)
+        {
+            List<ToDoListItem> list = ReadXml();
+            var targetToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
+
+            return targetToDoItem;
         }
 
         
-        public async Task<List<ToDoListItem>> GetToDoListItemAllRepository(string targetXmlPath)
+        public async Task<List<ToDoListItem>> GetToDoListItemAllRepository()
         {
-            List<ToDoListItem> list;
-            var serializer = new XmlSerializer(typeof(List<ToDoListItem>), new XmlRootAttribute("ToDoListItems"));
-            using (var reader = new StreamReader(targetXmlPath))
-            {
-                list = (List<ToDoListItem>)serializer.Deserialize(reader);
-            }
-
+            List<ToDoListItem> list = ReadXml();
             return list;
         }
     }

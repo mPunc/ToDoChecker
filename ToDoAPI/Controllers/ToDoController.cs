@@ -20,19 +20,11 @@ namespace ToDoAPI.Controllers
         }
 
         [HttpGet("test/add-item")]
-        public async Task<IActionResult> AddToDoTask()
+        public async Task<IActionResult> AddDefaultToDoTask()
         {
-            var result = await _toDoService.AddToDoTaskService();
+            var result = await _toDoService.AddDefaultToDoTaskService();
 
             return Ok(result);
-        }
-
-        [HttpGet("test/get-first")]
-        public async Task<ToDoListItem?> GetFirstItem()
-        {
-            var result = await _toDoService.GetFirstItemService();
-
-            return result;
         }
 
         [HttpPost("add-item")]
@@ -44,7 +36,15 @@ namespace ToDoAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("get-item")]
+        [HttpPut("update-item/{id}")]
+        public async Task<IActionResult> UpdateToDoListItem(int? id, [FromBody] ToDoListItem? item)
+        {
+            var result = await _toDoService.UpdateToDoListItemService(id, item);
+
+            return Ok();
+        }
+
+        [HttpGet("get-item/{id}")]
         public async Task<ToDoListItem?> GetToDoListItemAtId(int? id)
         {
             var result = await _toDoService.GetToDoListItemAtIdService(id);
@@ -59,5 +59,6 @@ namespace ToDoAPI.Controllers
 
             return result;
         }
+        
     }
 }

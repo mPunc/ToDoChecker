@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using ToDoAPI.Models.ToDoListItems;
 using ToDoAPI.Repositories;
 
@@ -7,27 +8,40 @@ namespace ToDoAPI.Services
     public class ToDoService
     {
         private readonly ToDoRepository _toDoRepository = new();
-        const string targetXmlPath = "./XmlData/to_do_list_itmes_data.xml";
+        
+        private async Task<int> FindFreeIndex()
+        {
+            var list = await _toDoRepository.GetToDoListItemAllRepository();
+            int sendIndex = 0;
+            var indexes = new List<int>();
+            foreach (var item in list)
+            {
+                indexes.Add(item.Id);
+            }
+            while(indexes.Contains(sendIndex)) sendIndex++;
+
+            return sendIndex;
+        }
 
         public async Task<string> GenerateXmlFilesService()
         {
-
-            if (System.IO.File.Exists(targetXmlPath))
+            try
             {
-                return $"File exists at {targetXmlPath}";
+                var repoResponse = await _toDoRepository.GenerateXmlFilesRepository();
+                return repoResponse;
             }
-            else
+            catch (Exception ex) 
             {
-                await _toDoRepository.GenerateXmlFilesRepository(targetXmlPath);
-                return $"File successfully created at {targetXmlPath}";
+                System.Diagnostics.Debug.WriteLine(ex);
+                return "Something went wrong :(";
             }
         }
 
-        public async Task<string> AddToDoTaskService()
+        public async Task<string> AddDefaultToDoTaskService()
         {
             try
             {
-                await _toDoRepository.AddToDoTaskRepository(targetXmlPath);
+                await _toDoRepository.AddDefaultToDoTaskRepository(await FindFreeIndex());
                 return "Added!";
             }
             catch (Exception ex) 
@@ -37,25 +51,25 @@ namespace ToDoAPI.Services
             }
         }
 
-        public async Task<ToDoListItem?> GetFirstItemService()
-        {
-            try
-            {
-                var item = await _toDoRepository.GetFirstItemRepository(targetXmlPath);
-                return item;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return null;
-            }
-        }
-
         public async Task<string> AddNewToDoListItemService(ToDoListItem? item)
         {
             try
             {
-                await _toDoRepository.AddNewToDoListItemRepository(targetXmlPath, item);
+                await _toDoRepository.AddNewToDoListItemRepository(item);
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                return "not ok";
+            }
+        }
+
+        public async Task<string> UpdateToDoListItemService(int? id, ToDoListItem? item)
+        {
+            try
+            {
+                await _toDoRepository.UpdateToDoListItemRepository(id, item);
                 return "ok";
             }
             catch (Exception ex)
@@ -69,7 +83,7 @@ namespace ToDoAPI.Services
         {
             try
             {
-                var item = await _toDoRepository.GetToDoListItemAtIdRepository(targetXmlPath, id);
+                var item = await _toDoRepository.GetToDoListItemAtIdRepository(id);
                 return item;
             }
             catch (Exception ex)
@@ -83,7 +97,7 @@ namespace ToDoAPI.Services
         {
             try
             {
-                var item = await _toDoRepository.GetToDoListItemAllRepository(targetXmlPath);
+                var item = await _toDoRepository.GetToDoListItemAllRepository();
                 return item;
             }
             catch (Exception ex)
@@ -92,6 +106,6 @@ namespace ToDoAPI.Services
                 return null;
             }
         }
-        
+
     }
 }

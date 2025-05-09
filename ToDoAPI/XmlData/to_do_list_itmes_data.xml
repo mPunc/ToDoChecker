@@ -44,15 +44,26 @@
     <DueDate>2025-05-11T00:13:49.0998689+02:00</DueDate>
     <Priority>high</Priority>
   </ToDoListItem>
-  <ToDoListItem completed="true" category="sport">
-    <Id>5</Id>
-    <Title>Different Stuff</Title>
+  <ToDoListItem completed="false" category="music">
+    <Id>0</Id>
+    <Title>Play guitar</Title>
     <TextContent>
       <MainText>asdasdasd</MainText>
       <Notes>asdfafa</Notes>
     </TextContent>
-    <CreatedAt>2025-05-09T00:13:49.0995549+02:00</CreatedAt>
-    <DueDate>2025-05-11T00:13:49.0998689+02:00</DueDate>
+    <CreatedAt>2025-05-09T02:05:01.6831327+02:00</CreatedAt>
+    <DueDate>2025-05-11T02:05:01.6832821+02:00</DueDate>
+    <Priority>high</Priority>
+  </ToDoListItem>
+  <ToDoListItem completed="false" category="music">
+    <Id>2</Id>
+    <Title>Play guitar</Title>
+    <TextContent>
+      <MainText>asdasdasd</MainText>
+      <Notes>asdfafa</Notes>
+    </TextContent>
+    <CreatedAt>2025-05-09T02:05:02.9466802+02:00</CreatedAt>
+    <DueDate>2025-05-11T02:05:02.9466816+02:00</DueDate>
     <Priority>high</Priority>
   </ToDoListItem>
 </ToDoListItems>
