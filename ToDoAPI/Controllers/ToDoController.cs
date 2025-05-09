@@ -35,9 +35,10 @@ namespace ToDoAPI.Controllers
         }
 
         [HttpPut("update-item/{id}")]
-        public async Task<IActionResult> UpdateToDoListItem([FromRoute] int? id, [FromBody] ToDoListItem? item)
+        [Consumes("application/xml")]
+        public async Task<IActionResult> UpdateToDoListItem([FromBody] ToDoListItem? item)
         {
-            var result = await _toDoService.UpdateToDoListItemService(id, item);
+            var result = await _toDoService.UpdateToDoListItemService(item);
 
             return Ok(result);
         }

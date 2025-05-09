@@ -24,23 +24,20 @@ namespace ToDoAPI.Repositories
 
         private static void CommitXmlChanges(List<ToDoListItem>? list)
         {
-            if (File.Exists(targetXmlPath))
+            var ToDoListItems = new ToDoListItemWrapper();
+            if (list != null && list.Count != 0)
+                ToDoListItems.Items.AddRange(list);
+            var xmlSerializer = new XmlSerializer(typeof(ToDoListItemWrapper));
+            var xmlSettings = new XmlWriterSettings
             {
-                var ToDoListItems = new ToDoListItemWrapper();
-                if (list != null && list.Count != 0)
-                    ToDoListItems.Items.AddRange(list);
-                var xmlSerializer = new XmlSerializer(typeof(ToDoListItemWrapper));
-                var xmlSettings = new XmlWriterSettings
-                {
-                    Indent = true,
-                    Encoding = Encoding.UTF8
-                };
-                using (var stream = new FileStream(targetXmlPath, FileMode.Create))
-                using (var writer = XmlWriter.Create(stream, xmlSettings))
-                {
-                    writer.WriteDocType("ToDoListItems", null, "to_do_list_items_dtd.dtd", null);
-                    xmlSerializer.Serialize(writer, ToDoListItems);
-                }
+                Indent = true,
+                Encoding = Encoding.UTF8
+            };
+            using (var stream = new FileStream(targetXmlPath, FileMode.Create))
+            using (var writer = XmlWriter.Create(stream, xmlSettings))
+            {
+                writer.WriteDocType("ToDoListItems", null, "to_do_list_items_dtd.dtd", null);
+                xmlSerializer.Serialize(writer, ToDoListItems);
             }
         }
 
@@ -76,20 +73,21 @@ namespace ToDoAPI.Repositories
             
         }
 
-        public async Task AddNewToDoListItemRepository(ToDoListItem item)
+        public async Task AddNewToDoListItemRepository(int id, ToDoListItem item)
         {
             List<ToDoListItem> list = ReadXml();
 
+            item.Id = id;
             list.Add(item);
 
             CommitXmlChanges(list);
         }
 
-        public async Task UpdateToDoListItemRepository(int? id, ToDoListItem? item)
+        public async Task UpdateToDoListItemRepository(ToDoListItem? item)
         {
-            List<ToDoListItem> list = ReadXml();
+            var list = ReadXml();
 
-            list.RemoveAll(x => x.Id == id);
+            list.RemoveAll(x => x.Id == item.Id);
             list.Add(item);
 
             CommitXmlChanges(list);

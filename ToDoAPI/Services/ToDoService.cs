@@ -53,7 +53,7 @@ namespace ToDoAPI.Services
         {
             try
             {
-                await _toDoRepository.AddNewToDoListItemRepository(item);
+                await _toDoRepository.AddNewToDoListItemRepository(await FindFreeIndex(), item);
                 return "ok";
             }
             catch (Exception ex)
@@ -63,11 +63,11 @@ namespace ToDoAPI.Services
             }
         }
 
-        public async Task<string> UpdateToDoListItemService(int? id, ToDoListItem? item)
+        public async Task<string> UpdateToDoListItemService(ToDoListItem? item)
         {
             try
             {
-                await _toDoRepository.UpdateToDoListItemRepository(id, item);
+                await _toDoRepository.UpdateToDoListItemRepository(item);
                 return "ok";
             }
             catch (Exception ex)
