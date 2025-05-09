@@ -1,9 +1,16 @@
 # .NET Core
 bin/
 obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# User-specific files
 .vs/
 .idea/
-*.user
-*.userosscache
-*.suo
-*.sln.docstates
+
+# Build results
+*.dll
+*.exe
+*.app
