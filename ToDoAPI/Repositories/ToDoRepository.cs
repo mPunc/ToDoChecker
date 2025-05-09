@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using ToDoAPI.Models.ToDoListItems;
 
@@ -18,7 +19,7 @@ namespace ToDoAPI.Repositories
             using var reader = new StreamReader(stream);
 
             var list = (ToDoListItemWrapper)serializer.Deserialize(reader)!;
-            ValidateWithDTD(targetXmlPath);
+            
             return list.Items;
         }
         private static async Task CommitXmlChanges(List<ToDoListItem>? list)
@@ -43,25 +44,28 @@ namespace ToDoAPI.Repositories
 
             await stream.FlushAsync();
         }
-
         private static void ValidateWithDTD(string targetXmlPath)
         {
             var settings = new XmlReaderSettings
             {
                 DtdProcessing = DtdProcessing.Parse,
                 ValidationType = ValidationType.DTD,
-                XmlResolver = new XmlUrlResolver() // Important!
+                XmlResolver = new XmlUrlResolver()
             };
 
             settings.ValidationEventHandler += (sender, e) =>
             {
-                Console.WriteLine($"{e.Severity}: {e.Message}");
+                Console.WriteLine($"DTD validation {e.Severity}: {e.Message}");
+                if (e.Severity == XmlSeverityType.Error)
+                {
+                    throw new XmlException($"DTD validation error: {e.Message}");
+                }
             };
 
             using var reader = XmlReader.Create(targetXmlPath, settings);
             while (reader.Read()) { }
 
-            Console.WriteLine("Validation finished.");
+            //Console.WriteLine("Validation finished.");
         }
 
         //initial create xml repo
@@ -69,15 +73,18 @@ namespace ToDoAPI.Repositories
         {
             if (File.Exists(targetXmlPath))
             {
+                ValidateWithDTD(targetXmlPath);
                 return "File aready exists!";
             }
             await CommitXmlChanges(null);
+            ValidateWithDTD(targetXmlPath);
             return "File successfully created at: '" + targetXmlPath + "'";
         }
 
         //CREATE one repo
         public async Task AddNewToDoListItemRepository(int id, ToDoListItem item)
         {
+            ValidateWithDTD(targetXmlPath);
             List<ToDoListItem> list = await ReadXml();
 
             item.Id = id;
@@ -89,17 +96,17 @@ namespace ToDoAPI.Repositories
         //READ one repo
         public async Task<ToDoListItem?> GetToDoListItemAtIdRepository(int id)
         {
+            ValidateWithDTD(targetXmlPath);
             List<ToDoListItem> list = await ReadXml();
-            var targetToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
-
-            return targetToDoItem;
+            return list.FirstOrDefault(x => { return x.Id == id; });
         }
 
         //UPDATE one repo
         public async Task UpdateToDoListItemRepository(ToDoListItem item)
         {
-            var list =  await ReadXml();
+            ValidateWithDTD(targetXmlPath);
 
+            var list =  await ReadXml();
             var targetToDoItem = list.FirstOrDefault(x => { return x.Id == item.Id; });
             if (targetToDoItem != null)
             {
@@ -114,16 +121,16 @@ namespace ToDoAPI.Repositories
         //DELETE one repo
         public async Task DeleteToDoListItemRepository(int id)
         {
+            ValidateWithDTD(targetXmlPath);
             var list = await ReadXml();
-
             list.RemoveAll(x => x.Id == id);
-
             await CommitXmlChanges(list);
         }
 
         //READ ALL repo
         public async Task<List<ToDoListItem>> GetToDoListItemAllRepository()
         {
+            ValidateWithDTD(targetXmlPath);
             List<ToDoListItem> list = await ReadXml();
             return list;
         }
