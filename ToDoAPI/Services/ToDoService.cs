@@ -23,17 +23,16 @@ namespace ToDoAPI.Services
         }
 
         //initial create xml
-        public async Task<string> GenerateXmlFilesService()
+        public async Task<string?> GenerateXmlFilesService()
         {
             try
             {
                 var repoResponse = await _toDoRepository.GenerateXmlFilesRepository();
                 return repoResponse;
             }
-            catch (Exception ex) 
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
-                return "Something went wrong :(";
+                return null;
             }
         }
 

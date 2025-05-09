@@ -1,7 +1,4 @@
 <!ELEMENT ToDoListItems (ToDoListItem*)>
-<!ATTLIST ToDoListItems
-    xmlns:xsi CDATA #REQUIRED
-    xmlns:xsd CDATA #REQUIRED>
 
 <!ELEMENT ToDoListItem (Id, Title, TextContent, CreatedAt, DueDate, Priority)>
 <!ATTLIST ToDoListItem

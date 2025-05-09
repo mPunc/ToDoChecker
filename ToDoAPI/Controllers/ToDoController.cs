@@ -20,7 +20,7 @@ namespace ToDoAPI.Controllers
         {
             var result = await _toDoService.GenerateXmlFilesService();
 
-            return result is null ? NotFound("Item not found.") : Ok(result);
+            return result is null ? BadRequest("Error creating xml :(") : Ok(result);
         }
 
         //CREATE one
@@ -44,7 +44,7 @@ namespace ToDoAPI.Controllers
         }
 
         //UPDATE one
-        [HttpPut("{id}")]
+        [HttpPut]
         [Consumes("application/xml")]
         public async Task<IActionResult> UpdateToDoListItem([FromBody] ToDoListItem? item)
         {
