@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Serialization;
-using ToDoAPI.Models.ToDoListItems;
+﻿using ToDoAPI.Models.ToDoListItems;
 using ToDoAPI.Repositories;
 
 namespace ToDoAPI.Services
@@ -104,6 +102,20 @@ namespace ToDoAPI.Services
             {
                 System.Diagnostics.Debug.WriteLine(ex);
                 return null;
+            }
+        }
+
+        public async Task<string> DeleteToDoListItemService(int? id)
+        {
+            try
+            {
+                await _toDoRepository.DeleteToDoListItemRepository(id);
+                return "Went ok!";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                return "not gud";
             }
         }
 

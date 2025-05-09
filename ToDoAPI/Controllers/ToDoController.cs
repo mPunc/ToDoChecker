@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Xml;
-using System.Xml.Serialization;
 using ToDoAPI.Models.ToDoListItems;
 using ToDoAPI.Services;
 
@@ -37,15 +35,15 @@ namespace ToDoAPI.Controllers
         }
 
         [HttpPut("update-item/{id}")]
-        public async Task<IActionResult> UpdateToDoListItem(int? id, [FromBody] ToDoListItem? item)
+        public async Task<IActionResult> UpdateToDoListItem([FromRoute] int? id, [FromBody] ToDoListItem? item)
         {
             var result = await _toDoService.UpdateToDoListItemService(id, item);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpGet("get-item/{id}")]
-        public async Task<ToDoListItem?> GetToDoListItemAtId(int? id)
+        public async Task<ToDoListItem?> GetToDoListItemAtId([FromRoute] int? id)
         {
             var result = await _toDoService.GetToDoListItemAtIdService(id);
 
@@ -58,6 +56,14 @@ namespace ToDoAPI.Controllers
             var result = await _toDoService.GetToDoListItemAllService();
 
             return result;
+        }
+
+        [HttpDelete("delete-item/{id}")]
+        public async Task<IActionResult> DeleteToDoListItem([FromRoute] int? id)
+        {
+            var result = await _toDoService.DeleteToDoListItemService(id);
+
+            return Ok(result);
         }
         
     }

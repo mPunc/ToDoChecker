@@ -2,7 +2,7 @@
 
 namespace ToDoAPI.Models.ToDoListItems
 {
-    [Serializable]
+    [XmlRoot("TextContent")]
     public class TextContent
     {
         [XmlElement("MainText")]

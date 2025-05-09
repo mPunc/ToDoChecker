@@ -79,9 +79,9 @@ namespace ToDoAPI.Repositories
         {
             List<ToDoListItem> list = ReadXml();
 
-            var targetToDoItem = list.FirstOrDefault(x => { return x.Id == id; });
             list.RemoveAll(x => x.Id == id);
             list.Add(item);
+
             CommitXmlChanges(list);
         }
 
@@ -98,6 +98,15 @@ namespace ToDoAPI.Repositories
         {
             List<ToDoListItem> list = ReadXml();
             return list;
+        }
+
+        public async Task DeleteToDoListItemRepository(int? id)
+        {
+            var list = ReadXml();
+
+            list.RemoveAll(x => x.Id == id);
+
+            CommitXmlChanges(list);
         }
     }
 }

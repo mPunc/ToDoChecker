@@ -2,7 +2,7 @@
 
 namespace ToDoAPI.Models.ToDoListItems
 {
-    [XmlRoot("ToDoListItems")]  // This will change the root element name
+    [XmlRoot("ToDoListItems")]
     public class ToDoListItemWrapper
     {
         [XmlElement("ToDoListItem")]
