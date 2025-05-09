@@ -8,7 +8,7 @@ namespace ToDoAPI.Repositories
 {
     public class ToDoRepository
     {
-        const string targetXmlPath = "./XmlData/to_do_list_itmes_data.xml";
+        const string targetXmlPath = "./XmlData/to_do_list_items_data.xml";
 
         private static async Task<List<ToDoListItem>> ReadXml()
         {
@@ -18,6 +18,7 @@ namespace ToDoAPI.Repositories
             using var reader = new StreamReader(stream);
 
             var list = (ToDoListItemWrapper)serializer.Deserialize(reader)!;
+            ValidateWithDTD(targetXmlPath);
             return list.Items;
         }
         private static async Task CommitXmlChanges(List<ToDoListItem>? list)
@@ -41,6 +42,26 @@ namespace ToDoAPI.Repositories
             xmlSerializer.Serialize(writer, ToDoListItems, ns);
 
             await stream.FlushAsync();
+        }
+
+        private static void ValidateWithDTD(string targetXmlPath)
+        {
+            var settings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Parse,
+                ValidationType = ValidationType.DTD,
+                XmlResolver = new XmlUrlResolver() // Important!
+            };
+
+            settings.ValidationEventHandler += (sender, e) =>
+            {
+                Console.WriteLine($"{e.Severity}: {e.Message}");
+            };
+
+            using var reader = XmlReader.Create(targetXmlPath, settings);
+            while (reader.Read()) { }
+
+            Console.WriteLine("Validation finished.");
         }
 
         //initial create xml repo
