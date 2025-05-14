@@ -9,7 +9,9 @@ RUN dotnet publish "ToDoAPI.csproj" -c release -o /out --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /out .
+COPY XmlData/*.dtd /app/XmlData/
 
-EXPOSE 5000
 ENV ASPNETCORE_URLS=http://+:5000
+ENV XmlDataPath=/app/XmlData/
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "ToDoAPI.dll"]

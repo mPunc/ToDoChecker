@@ -1,0 +1,9 @@
+For Docker:
+
+docker build -t todo-api:v1.1 .
+
+docker run -p 5001:5000 --name [insert-container-name] todo-api:v1.1
+
+docker start [insert-container-name]
+
+docker stop [insert-container-name]
