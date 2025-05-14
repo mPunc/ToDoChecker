@@ -1,0 +1,14 @@
+# Build stuff
+bin/
+obj/
+.vs/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .env file contains default environment variables for docker
+.env
+.git/

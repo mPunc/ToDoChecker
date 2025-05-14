@@ -10,17 +10,17 @@ namespace ToDoAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // builder.WebHost.UseUrls("http://*:5000"); // handled in Dockerfile
 
+            // Add services to the container.
             builder.Services.AddControllers();
 
-            //sends xml instead of json
+            // Sends xml instead of json
             builder.Services.AddControllers().AddXmlSerializerFormatters();
 
             builder.Services.AddTransient<ToDoService>();
             builder.Services.AddScoped<ToDoRepository>();
 
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddSwaggerGen();
             var app = builder.Build();
 
