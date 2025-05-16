@@ -1,9 +1,31 @@
-For Docker:
+Basic and useful:
 
-docker build -t todo-api:v1.1 .
+docker build -t mpunch46/todo-api:[v1.1] .
 
-docker run -p 5001:5000 --name [insert-container-name] todo-api:v1.1
+docker tag mpunch46/todo-api:[v1.1] mpunch46/todo-api:latest
 
-docker start [insert-container-name]
+docker push mpunch46/todo-api:[v1.1]
+docker push mpunch46/todo-api:latest
 
-docker stop [insert-container-name]
+#for local
+docker run -p 5001:5000 --name [todo-api-container] todo-api
+
+#for pull and run
+docker run -p 5001:5000 --name [todo-api-container] mpunch46/todo-api:[v1.1]
+docker run -p 5001:5000 --name [todo-api-container] mpunch46/todo-api
+
+#for persisting data, create a volume
+docker run -p 5001:5000 --name [todo-api-container] -v [todo-xml-data]:/app/XmlData/ todo-api:v1.1
+
+docker start [todo-api-container]
+
+docker stop [todo-api-container]
+
+
+#You don't really need the following:
+Mounting folder from documents:
+
+docker run -p 5001:5000 --name [todo-api-container] -v C:\Users\[User]\Documents\XmlData:/app/XmlData/ todo-api:v1.1
+“Don’t use the folder inside the image at /app/XmlData/. Instead, mount my local folder over it.”
+
+#note: make sure XmlData folder already exists, not practical, needs command that copies the .dtd to the dir
