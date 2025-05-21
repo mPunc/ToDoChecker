@@ -12,6 +12,14 @@ namespace ToDoAPI
 
             // builder.WebHost.UseUrls("http://*:5000"); // handled in Dockerfile
 
+            builder.Services.AddCors(options => { 
+                options.AddPolicy("AllowAllOrigins", builder => {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -33,6 +41,8 @@ namespace ToDoAPI
                     c.RoutePrefix = string.Empty; // Makes Swagger UI accessible at the root
                 });
             }
+
+            app.UseCors("AllowAllOrigins");
 
             //Configure middleware
             app.UseHttpsRedirection();
