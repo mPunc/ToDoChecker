@@ -1,15 +1,9 @@
-import './App.css';
+//import './App.css';
+import StartPage from './pages/StartPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit and save to reload.
-        </p>
-          Learn React
-      </header>
-    </div>
+    <StartPage/>
   );
 }
 
