@@ -4,8 +4,8 @@ import XmlDisplayAllFunctions from "./xmlDisplay/XmlDisplayAllFunctions"
 function StartPageContent() {
     return (
         <div className="container">
+            <XmlDisplayAllFunctions/>
             <div className="row">
-                <XmlDisplayAllFunctions/>
                 <OneTask/>
                 <OneTask/>
                 <OneTask/>
