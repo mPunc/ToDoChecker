@@ -5,7 +5,7 @@ function OneTask() {
         fetchTasks();
     };
     return (
-        <div className="card col-12 col-md-5 me-auto mb-4 p-0">
+        <div className="card col-md-5 mb-3 p-0">
             <h5 className="card-header">Task title</h5>
             <div className="card-body">
                 <h5 className="card-title">Special title treatment</h5>
