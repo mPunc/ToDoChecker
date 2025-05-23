@@ -7,7 +7,7 @@ function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="navbar-brand fs-2 text">To Do Checker</div>
-                <div className="navbar-brand fs-4 text">[Username]</div>
+                <div className="navbar-brand fs-4 text">Username</div>
                 <div className="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
                     <div className="offcanvas-header">
                         <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas - navigation and options</h5>
