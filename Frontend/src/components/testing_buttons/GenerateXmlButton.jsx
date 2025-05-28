@@ -1,4 +1,4 @@
-import { fetchGenerateXml } from "../../api/todoApi";
+import { fetchGenerateXml } from "../../api/todoApiTest";
 
 function GenerateXmlButton() {
     return <div>

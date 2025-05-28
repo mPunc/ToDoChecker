@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchDeleteOne } from "../../api/todoApi";
+import { fetchDeleteOne } from "../../api/todoApiTest";
 
 function DeleteOneButton() {
     const [idToDelete, setIdToDelete] = useState("");

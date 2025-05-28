@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchUpdateOne } from "../../api/todoApi";
+import { fetchUpdateOne } from "../../api/todoApiTest";
 
 function UpdateOneButton() {
     const [idToUpdate, setIdToUpdate] = useState("");

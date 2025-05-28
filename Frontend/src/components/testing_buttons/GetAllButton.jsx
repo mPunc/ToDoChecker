@@ -1,4 +1,4 @@
-import { fetchGetAll } from "../../api/todoApi";
+import { fetchGetAll } from "../../api/todoApiTest";
 
 function GetAllButton() {
     return <div>
