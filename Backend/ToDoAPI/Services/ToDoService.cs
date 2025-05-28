@@ -71,11 +71,12 @@ namespace ToDoAPI.Services
         }
 
         //UPDATE one service
-        public async Task<string?> UpdateToDoListItemService(ToDoListItem? item)
+        public async Task<string?> UpdateToDoListItemService(int? id, ToDoListItem? item)
         {
             try
             {
                 if (item == null) return null;
+                if (id == null || id != item.Id) return null;
                 await _toDoRepository.UpdateToDoListItemRepository(item);
                 return $"{item.Title} updated!";
             }

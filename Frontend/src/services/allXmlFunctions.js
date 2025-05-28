@@ -100,7 +100,7 @@ export async function updateTask(id) {
     const updatedXmlString = new XMLSerializer().serializeToString(xml);
     console.log(updatedXmlString);
 
-    return await fetch(`http://localhost:5001/todo`, {
+    return await fetch(`http://localhost:5001/todo/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/xml"

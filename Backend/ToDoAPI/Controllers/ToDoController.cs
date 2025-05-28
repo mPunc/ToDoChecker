@@ -44,11 +44,11 @@ namespace ToDoAPI.Controllers
         }
 
         //UPDATE one controller
-        [HttpPut]
+        [HttpPut("{id}")]
         [Consumes("application/xml")]
-        public async Task<IActionResult> UpdateToDoListItem([FromBody] ToDoListItem? item)
+        public async Task<IActionResult> UpdateToDoListItem([FromRoute] int? id, [FromBody] ToDoListItem? item)
         {
-            var result = await _toDoService.UpdateToDoListItemService(item);
+            var result = await _toDoService.UpdateToDoListItemService(id, item);
 
             return result is null ? NotFound("Error: Item not found.") : Ok(result);
         }
