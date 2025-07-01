@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function parseXmlToTasks(xmlString) {
   const parser = new DOMParser();
@@ -30,6 +31,11 @@ export default function TasksListData() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const onDetails = (id) => {
+    navigate(`/todo/${id}`);
+  }
 
   const fetchTasks = () => {
     setLoading(true);
@@ -110,13 +116,13 @@ export default function TasksListData() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-4">
       {tasks.map(task => (
-        <TaskCard key={task.id} task={task} onDelete={() => handleDelete(task.id)} onComplete={handleComplete}/>
+        <TaskCard key={task.id} task={task} onDelete={() => handleDelete(task.id)} onComplete={handleComplete} onDetails={() => onDetails(task.id)}/>
       ))}
     </div>
   );
 }
 
-function TaskCard({ task, onDelete, onComplete }) {
+function TaskCard({ task, onDelete, onComplete, onDetails }) {
   const handleComplete = () => {
     // Only trigger if not already completed
     if (task.completed === 'true') return;

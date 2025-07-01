@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import TaskList from './pages/TaskList';
 import AddTask from './pages/AddTask';
 import Controls from './pages/Controls';
+import TaskDetails from './pages/TaskDetails';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -12,6 +13,7 @@ const router = createBrowserRouter(
       <Route path='/tasks' element= {<TaskList/>}/>
       <Route path='/addtask' element= {<AddTask/>}/>
       <Route path='/controls' element= {<Controls/>}/>
+      <Route path="/todo/:id" element={<TaskDetails />} />
     </Route>
   )
 );
