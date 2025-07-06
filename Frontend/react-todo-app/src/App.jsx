@@ -1,6 +1,6 @@
 import {Route, createBrowserRouter, createRoutesFromElements, RouterProvider} from 'react-router-dom';
-import HomePage from './pages/HomePage';
 import MainLayout from './layouts/MainLayout';
+import HomePage from './pages/HomePage';
 import TaskList from './pages/TaskList';
 import AddTask from './pages/AddTask';
 import Controls from './pages/Controls';
@@ -18,10 +18,8 @@ const router = createBrowserRouter(
   )
 );
 
-const App = () => {
+export default function App() {
   return (
     <RouterProvider router={router}/>
   )
 }
-
-export default App
