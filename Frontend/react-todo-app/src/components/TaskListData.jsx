@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { parseXmlToTasks, buildTaskXml } from '../utils/xmlParser';
+import { parseXmlToTasks, updateTaskXml } from '../utils/xmlParser';
 import TaskCard from './TaskCard';
 
 export default function TasksListData() {
@@ -61,7 +61,7 @@ export default function TasksListData() {
   const handleComplete = async (task) => {
     const newCompleted = task.completed === 'true' ? 'false' : 'true';    
     const updatedTask = { ...task, completed: newCompleted };
-    const xml = await buildTaskXml(updatedTask);
+    const xml = await updateTaskXml(updatedTask);
     try {
       const res = await fetch(`http://localhost:5001/todo/${updatedTask.id}`, {
         method: 'PUT',

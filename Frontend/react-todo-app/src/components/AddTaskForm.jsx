@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { buildTaskXml } from '../utils/xmlParser'
 
 export default function AddTask() {
   const [title, setTitle] = useState('');
@@ -7,33 +8,16 @@ export default function AddTask() {
   const [category, setCategory] = useState('');
   const [priority, setPriority] = useState('low');
   const [completed, setCompleted] = useState(false);
-  const [dueDate, setDueDate] = useState('');
+  const [dueDate, setDueDate] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
-  // Helper to build XML string based on your backend structure
-  function buildXml() {
-    return `
-      <ToDoListItem completed="${completed}" category="${category}">
-        <Id>0</Id> 
-        <Title>${title}</Title>
-        <TextContent>
-          <MainText>${mainText}</MainText>
-          <Notes>${notes}</Notes>
-        </TextContent>
-        <CreatedAt>${new Date().toISOString()}</CreatedAt>
-        <DueDate>${dueDate}</DueDate>
-        <Priority>${priority}</Priority>
-      </ToDoListItem>
-    `.trim();
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
     setSuccess(null);
 
-    const xmlData = buildXml();
+    const xmlData = await buildTaskXml(title, mainText, notes, category, priority, completed, dueDate);
 
     try {
       const res = await fetch('http://localhost:5001/todo', {
@@ -44,23 +28,20 @@ export default function AddTask() {
         },
         body: xmlData,
       });
-
       if (!res.ok) throw new Error(`Failed to add task: ${res.status}`);
-
       setSuccess('Task added successfully!');
-      // Optionally reset form here
     } catch (err) {
       setError(err.message);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto mt-6 px-4 space-y-4 text-gray-800">
       <h2 className="text-xl font-bold">Add New Task</h2>
 
       <input
         type="text"
-        placeholder="Title"
+        placeholder="Title*"
         required
         value={title}
         onChange={e => setTitle(e.target.value)}
@@ -68,7 +49,7 @@ export default function AddTask() {
       />
 
       <textarea
-        placeholder="Main Text"
+        placeholder="Main Text*"
         required
         value={mainText}
         onChange={e => setMainText(e.target.value)}
@@ -100,12 +81,19 @@ export default function AddTask() {
         <option value="high">High</option>
       </select>
 
-      <input
-        type="date"
-        value={dueDate}
-        onChange={e => setDueDate(e.target.value)}
-        className="w-full border rounded px-3 py-2"
-      />
+      <div className="flex items-center gap-2">
+        <label htmlFor="dueDate" className="text-lg">
+          Due Date
+        </label>
+        <input
+          id="dueDate"
+          type="date"
+          required
+          value={dueDate}
+          onChange={e => setDueDate(e.target.value)}
+          className="border rounded px-3 py-2"
+        />
+      </div>
 
       <label className="inline-flex items-center space-x-2">
         <input
@@ -117,12 +105,12 @@ export default function AddTask() {
         <span>Completed</span>
       </label>
 
-      {error && <p className="text-red-600">{error}</p>}
-      {success && <p className="text-green-600">{success}</p>}
+      {error && <p className="text-red-600 text-center text-xl">{error}</p>}
+      {success && <p className="text-green-600 text-center text-xl">{success}</p>}
 
       <button
         type="submit"
-        className="block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+        className="block bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
       >
         Add Task
       </button>

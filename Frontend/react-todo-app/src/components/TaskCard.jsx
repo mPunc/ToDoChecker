@@ -38,7 +38,7 @@ export default function TaskCard({ task, onDelete, onComplete, onDetails }) {
         </button>
         <button
           onClick={() => onDetails(task.id)}
-          className="px-3 py-1 rounded bg-indigo-500 text-white hover:bg-indigo-700 cursor-pointer"
+          className="px-3 py-1 rounded bg-indigo-500 text-white hover:bg-indigo-600 cursor-pointer"
         >
           Details
         </button>

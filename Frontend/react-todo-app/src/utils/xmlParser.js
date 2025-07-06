@@ -24,18 +24,34 @@ export async function parseXmlToTasks(xmlString) {
   });
 }
 
-export async function buildTaskXml(task) {
-    return `
-        <ToDoListItem completed="${task.completed}" category="${task.category}">
-        <Id>${task.id}</Id>
-        <Title>${task.title}</Title>
-        <TextContent>
-            <MainText>${task.mainText}</MainText>
-            <Notes>${task.notes}</Notes>
-        </TextContent>
-        <CreatedAt>${task.createdAt}</CreatedAt>
-        <DueDate>${task.dueDate}</DueDate>
-        <Priority>${task.priority}</Priority>
-        </ToDoListItem>
-    `;
+export async function updateTaskXml(task) {
+  return `
+      <ToDoListItem completed="${task.completed}" category="${task.category}">
+      <Id>${task.id}</Id>
+      <Title>${task.title}</Title>
+      <TextContent>
+          <MainText>${task.mainText}</MainText>
+          <Notes>${task.notes}</Notes>
+      </TextContent>
+      <CreatedAt>${task.createdAt}</CreatedAt>
+      <DueDate>${task.dueDate}</DueDate>
+      <Priority>${task.priority}</Priority>
+      </ToDoListItem>
+  `;
+}
+
+export async function buildTaskXml(title, mainText, notes, category, priority, completed, dueDate) {
+  return `
+    <ToDoListItem completed="${completed}" category="${category}">
+      <Id>0</Id> 
+      <Title>${title}</Title>
+      <TextContent>
+        <MainText>${mainText}</MainText>
+        <Notes>${notes}</Notes>
+      </TextContent>
+      <CreatedAt>${new Date().toISOString()}</CreatedAt>
+      <DueDate>${dueDate}</DueDate>
+      <Priority>${priority}</Priority>
+    </ToDoListItem>
+  `.trim();
 }

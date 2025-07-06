@@ -23,10 +23,11 @@ export default function GenerateXmlButton() {
   };
 
   return (
-    <div className="p-4">
+    <div className="max-w-4xl mx-auto mt-6 px-4 text-gray-800">
+      <h1 className="text-xl font-bold mb-4">Press to generate XML</h1>
       <button
         onClick={handleGenerate}
-        className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+        className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-700"
       >
         Generate XML
       </button>
