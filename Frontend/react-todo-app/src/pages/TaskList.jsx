@@ -1,10 +1,7 @@
-import React from 'react'
 import TasksListData from '../components/TaskListData'
 
-const TaskList = () => {
+export default function TaskList () {
   return (
     <TasksListData/>
-  )
+  );
 }
-
-export default TaskList

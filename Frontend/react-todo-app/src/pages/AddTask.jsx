@@ -1,10 +1,8 @@
 import React from 'react'
 import AddTaskForm from '../components/AddTaskForm'
 
-const AddTask = () => {
+export default function AddTask() {
   return (
     <AddTaskForm/>
-  )
+  );
 }
-
-export default AddTask
